@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Reddit Clone</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+    </head>
+    <body ng-app="redditClone" ng-controller="MainCtrl">
+        First Name: <input type="text" ng-model="firstName"><br>
+        {{test}}<br>
+        <ul>
+            <!-- {{}}} denotes AngularJS display the specified variable's content -->
+            <li ng-repeat="post in posts | orderBy: '-upvotes'">
+                {{post.title}} - upvotes: {{post.upvotes}}
+            </li>
+        </ul>
+            
+        <button type="button" onclick="myFunction()">Try it</button>
+
+<p>(myFunction is stored in an external file called "app.js")</p>
+
+<script src="scripts/app.js"></script>
+
+</body>
+</html>
