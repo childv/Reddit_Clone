@@ -2,22 +2,47 @@
 <html>
     <head>
         <title>Reddit Clone</title>
+        <!-- Bootstrap from CDS -->
+        <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+        <style> .glyphicon-thumbs-up { cursor:pointer} </style>
     </head>
     <body ng-app="redditClone" ng-controller="MainCtrl">
-        {{test}}<br>
-        <div ng-repeat="post in posts | orderBy: '-upvotes'">
-            <span ng-click="incrementUpvotes(post)">^</span>
-            <!-- if link present, make have title link to site. Else, plain text title if no link is present (ng-hide is true)-->
-            <a ng-show="post.link" href="{{post.link}}">
-                {{post.title}}
-            </a>
-            <span ng-hide="post.link">
-                {{post.title}}
-            </span>
-            - upvotes: {{post.upvotes}}
-        </div>
-        
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3">
+                <div class="page-header">
+                    <h1>Reddit Clone</h1>
+                </div>
+            
+                <div ng-repeat="post in posts | orderBy: '-upvotes'">
+                    <span class="glyphicon glyphicon-thumbs-up" ng-click="incrementUpvotes(post)"></span>
+                    {{post.upvotes}}
+                    <span style="font-size:20px; margin-left:10px;">
+                        <!-- if link present, make have title link to site. Else, plain text title if no link is present (ng-hide is true)-->
+                        <a ng-show="post.link" href="{{post.link}}">
+                            {{post.title}}
+                        </a>
+                        <span ng-hide="post.link">
+                            {{post.title}}
+                        </span>
+                    </span>
+                </div>
+                
+                 <!-- Enter custom posts -->
+                <form ng-submit="addPost()" style="margin-top:30px;">
+                    <h3>Add a new post</h3>
+                    
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Title" ng-model="title">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Link" ng-model="link">
+                    </div>
+                    <button type="submit" class="btn btn-primary" ng-click="addPost()">Post</button>
+                </form>
+            
+            </div>
+        </div>        
         <!--
         <ul>
             <!-- {{}}} denotes AngularJS display the specified variable's content --
@@ -27,14 +52,6 @@
             </li>
         </ul>-->
         
-        <!-- Enter custom posts -->
-        <form ng-submit="addPost()">
-            <input type="text" placeholder="Title" ng-model="title">
-            <input type="text" placeholder="Link" ng-model="link">
-            <button type="button" ng-click="addPost()">Post</button>
-
-        </form>
-            
 <p>(myFunction is stored in an external file called "app.js")</p>
 
 <script src="scripts/app.js"></script>
