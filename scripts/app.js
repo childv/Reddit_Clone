@@ -1,6 +1,27 @@
 /*Angular code for Reddit Clone frontend */
 
-var app = angular.module('redditClone', []);
+// ui.router is an app dependency 
+var app = angular.module('redditClone', ['ui.router']);
+
+app.config(['$stateProvider', '$urlRouterProvider',
+            function($stateProvider, $urlRouterProvider) {
+        // set up home route '/home' controlled by MainCtrl
+        $stateProvider.state('home', {
+            url: '/home',
+            templateUrl: './home.html',
+            controller: 'MainCtrl'
+        });
+        
+    //redirect undefined urls!!
+    $urlRouterProvider.otherwise('home');
+}]);
+
+// state where indiviual post can be accessed
+app.state('posts', {
+    url: '/posts/{id}', //{id} is a route parameter
+    templateUrl: './posts.html',
+    controller: 'PostsCtrl'
+});
 
 /* Factory:
 Most popular way to create and configure a service
@@ -41,7 +62,11 @@ app.controller('MainCtrl', [
         $scope.posts.push({
             title: $scope.title,
             link: $scope.link,
-            upvotes: 0
+            upvotes: 0,
+            comments: [
+                {author: 'Joe', body: 'Nice one!', upvotes: 0},
+                {author: 'Jane', body: 'Why no votes?', upvotes: 0}
+            ]
         });
         $scope.title = '';
         $scope.link = '';
@@ -50,6 +75,14 @@ app.controller('MainCtrl', [
         post.upvotes += 1;
     };
 }]);
+
+// controller for posts
+app.controller('PostsCtrl', [
+    '$scope', '$stateParams', 'posts',
+    function($scope, $stateParams, posts){
+        
+    }
+]);
 
 /* Service
 When you’re using Service, it’s instantiated with the ‘new’ keyword. Because of that, you’ll add properties to ‘this’ and the service will return ‘this’. When you pass the service into your controller, those properties on ‘this’ will now be available on that controller through your service.
