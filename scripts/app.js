@@ -5,20 +5,19 @@ var app = angular.module('redditClone', ['ui.router']);
 
 app.config(['$stateProvider', '$urlRouterProvider',
             function($stateProvider, $urlRouterProvider) {
-        // set up home route '/home' controlled by MainCtrl
-        $stateProvider.state('home', {
-            url: '/home',
-            templateUrl: './home.html',
-            controller: 'MainCtrl'
-        });
-        
-    //redirect undefined urls!!
-    $urlRouterProvider.otherwise('home');
+                // set up home route '/home' controlled by MainCtrl
+                $stateProvider.state('home', {
+                    url: '/home',
+                    templateUrl: '/home.html',
+                    controller: 'MainCtrl'
+                });
+                //redirect undefined urls!!
+                $urlRouterProvider.otherwise('home');
 }]);
 
 // state where indiviual post can be accessed
 app.state('posts', {
-    url: '/posts/{id}', //{id} is a route parameter
+    url: '/posts/{id}', //{id} is a route parameter for controller
     templateUrl: './posts.html',
     controller: 'PostsCtrl'
 });
@@ -51,36 +50,38 @@ app.controller('MainCtrl', [
     '$scope',
     'posts',
     function($scope, posts) {
-    // $scope bridges variable "posts" to index template
-    // access "posts" factory services
-    $scope.posts = posts.posts;
-    $scope.addPost = function() {
-        // prevents empty posts
-        if(!$scope.title || $scope.title === '') {
-            return;
-        }
-        $scope.posts.push({
-            title: $scope.title,
-            link: $scope.link,
-            upvotes: 0,
-            comments: [
-                {author: 'Joe', body: 'Nice one!', upvotes: 0},
-                {author: 'Jane', body: 'Why no votes?', upvotes: 0}
-            ]
-        });
-        $scope.title = '';
-        $scope.link = '';
-    };
-    $scope.incrementUpvotes = function(post){
-        post.upvotes += 1;
-    };
+        // $scope bridges variable "posts" to index template
+        // access "posts" factory services
+        $scope.posts = posts.posts;
+        $scope.addPost = function() {
+            // prevents empty posts
+            if(!$scope.title || $scope.title === '') {
+                return;
+            }
+            $scope.posts.push({title: 'A new post!', upvotes: 0, comments: []});
+            $scope.posts.push({
+                title: $scope.title,
+                link: $scope.link,
+                upvotes: 0,
+                comments: [
+                    {author: 'Joe', body: 'Nice one!', upvotes: 0},
+                    {author: 'Jane', body: 'Why no votes?', upvotes: 0}
+                ]
+            });
+            $scope.title = '';
+            $scope.link = '';
+        };
+        $scope.incrementUpvotes = function(post){
+            post.upvotes += 1;
+        };
 }]);
 
 // controller for posts
 app.controller('PostsCtrl', [
     '$scope', '$stateParams', 'posts',
-    function($scope, $stateParams, posts){
-        
+    function($scope, $stateParams, posts){ 
+        // use id route param for specific post's page to get post variable
+        $scope.post = post.posts[$stateParams.id]; 
     }
 ]);
 
